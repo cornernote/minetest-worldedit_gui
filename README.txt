@@ -5,7 +5,7 @@ WorldEdit GUI for Minetest
 
 Copyright (c) 2012 cornernote, Brett O'Donnell <cornernote@gmail.com>
 
-Source Code: https://github.com/cornernote/minetest-home_gui
+Source Code: https://github.com/cornernote/minetest-worldedit_gui
 License: GPLv3
 
 
