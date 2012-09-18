@@ -8,9 +8,6 @@ License: GPLv3
 
 ]]--
 
--- add inventory_plus page
-inventory_plus.pages["worldedit_gui"] = "World Edit"
-
 -- local api
 local worldedit_gui = {}
 
@@ -23,8 +20,7 @@ worldedit_gui.inv = {}
 -- get_formspec
 worldedit_gui.get_formspec = function(player,page)
 	local name = player:get_player_name();
-	local pos1 = worldedit.pos1[name]
-	local pos2 = worldedit.pos2[name]
+	local pos1,pos2 = worldedit.pos1[name],worldedit.pos2[name]
 	local formspec = ""
 	
 	-- worldedit_gui
@@ -376,6 +372,7 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local page = nil
 	local name = player:get_player_name()
+	if not minetest.check_player_privs(name, {worldedit=true}) then return end
 	
 	-- gui
 	if fields.worldedit_gui then
@@ -823,9 +820,15 @@ end)
 
 -- register_on_joinplayer
 minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+	if not minetest.check_player_privs(name, {worldedit=true}) then return end
+
+	-- add inventory_plus page
+	inventory_plus.register_button(player,"worldedit_gui","World Edit")
+
+	-- setup deteched inventory
 	local player_inv = player:get_inventory()
-	local player_name = player:get_player_name()
-	worldedit_gui.inv[player_name] = minetest.create_detached_inventory(player:get_player_name().."_worldedit_gui",{
+	worldedit_gui.inv[name] = minetest.create_detached_inventory(name.."_worldedit_gui",{
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
 			inventory_plus.set_inventory_formspec(player, worldedit_gui.get_formspec(player,listname))
@@ -851,13 +854,13 @@ minetest.register_on_joinplayer(function(player)
 	for _,v in ipairs({"set","cylinder","hollow_cylinder","spiral"}) do
 		local page = "worldedit_gui_"..v
 		player_inv:set_size(page, 1)
-		worldedit_gui.inv[player_name]:set_size(page, 1)
-		worldedit_gui.inv[player_name]:set_stack(page,1,player_inv:get_stack(page,1))
+		worldedit_gui.inv[name]:set_size(page, 1)
+		worldedit_gui.inv[name]:set_stack(page,1,player_inv:get_stack(page,1))
 	end
 	player_inv:set_size("worldedit_gui_replace", 2)
-	worldedit_gui.inv[player_name]:set_size("worldedit_gui_replace", 2)
-	worldedit_gui.inv[player_name]:set_stack("worldedit_gui_replace",1,player_inv:get_stack("worldedit_gui_replace",1))
-	worldedit_gui.inv[player_name]:set_stack("worldedit_gui_replace",2,player_inv:get_stack("worldedit_gui_replace",2))
+	worldedit_gui.inv[name]:set_size("worldedit_gui_replace", 2)
+	worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",1,player_inv:get_stack("worldedit_gui_replace",1))
+	worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",2,player_inv:get_stack("worldedit_gui_replace",2))
 end)
 
 -- log that we started
