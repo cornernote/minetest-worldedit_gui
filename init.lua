@@ -461,7 +461,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	-- set - action
 	if fields.worldedit_gui_set_go then
 		local item_name = player:get_inventory():get_stack("worldedit_gui_set", 1):get_name()
-		if item_name == "" then item_name = "default:air" end
+		if item_name == "" then item_name = "air" end
 		local pos1, pos2 = worldedit.pos1[name], worldedit.pos2[name]
 		local count = worldedit.set(pos1, pos2, item_name)
 		minetest.chat_send_player(name, count .. " nodes set")
@@ -499,8 +499,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.worldedit_gui_replace_go then
 		local search_node = player:get_inventory():get_stack("worldedit_gui_replace", 1):get_name()
 		local replace_node = player:get_inventory():get_stack("worldedit_gui_replace", 2):get_name()
-		if search_node == "" then search_node = "default:air" end
-		if replace_node == "" then replace_node = "default:air" end
+		if search_node == "" then search_node = "air" end
+		if replace_node == "" then replace_node = "air" end
 		local pos1, pos2 = worldedit.pos1[name], worldedit.pos2[name]
 		local count = worldedit.replace(pos1, pos2, search_node, replace_node)
 		minetest.chat_send_player(name, count .. " nodes replaced")
