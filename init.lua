@@ -20,6 +20,7 @@ worldedit_gui.inv = {}
 -- get_formspec
 worldedit_gui.get_formspec = function(player,page)
 	local name = player:get_player_name();
+	local player_inv = player:get_inventory()
 	local pos1,pos2 = worldedit.pos1[name],worldedit.pos2[name]
 	local formspec = ""
 	
@@ -87,7 +88,7 @@ worldedit_gui.get_formspec = function(player,page)
 			if minetest.registered_nodes[node] then
 				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_set_go;Set Nodes Now]"
 			else
-				formspec = formspec.."label[2.5,2.5;Missing Node]"
+				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_set_go;Set Air Now]"
 			end
 		else
 			formspec = formspec.."label[2.5,2.5;No WorldEdit Region Selected]"
@@ -121,6 +122,10 @@ worldedit_gui.get_formspec = function(player,page)
 		if pos1 and pos2 then
 			if minetest.registered_nodes[node_2] and minetest.registered_nodes[node_1] then
 				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_replace_go;Replace Nodes Now]"
+			elseif minetest.registered_nodes[node_1] then
+				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_replace_go;Replace With Air]"
+			elseif minetest.registered_nodes[node_1] then
+				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_replace_go;Replace Air With]"
 			else
 				formspec = formspec.."label[2.5,2.5;Missing Node]"
 			end
@@ -456,6 +461,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	-- set - action
 	if fields.worldedit_gui_set_go then
 		local item_name = player:get_inventory():get_stack("worldedit_gui_set", 1):get_name()
+		if item_name == "" then item_name = "default:air" end
 		local pos1, pos2 = worldedit.pos1[name], worldedit.pos2[name]
 		local count = worldedit.set(pos1, pos2, item_name)
 		minetest.chat_send_player(name, count .. " nodes set")
@@ -493,6 +499,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.worldedit_gui_replace_go then
 		local search_node = player:get_inventory():get_stack("worldedit_gui_replace", 1):get_name()
 		local replace_node = player:get_inventory():get_stack("worldedit_gui_replace", 2):get_name()
+		if search_node == "" then search_node = "default:air" end
+		if replace_node == "" then replace_node = "default:air" end
 		local pos1, pos2 = worldedit.pos1[name], worldedit.pos2[name]
 		local count = worldedit.replace(pos1, pos2, search_node, replace_node)
 		minetest.chat_send_player(name, count .. " nodes replaced")
