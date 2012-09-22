@@ -2,26 +2,8 @@
 WorldEdit GUI for Minetest
 ----------------------------------
 
-
 Copyright (c) 2012 cornernote, Brett O'Donnell <cornernote@gmail.com>
-
 Source Code: https://github.com/cornernote/minetest-worldedit_gui
-License: GPLv3
-
-
-
-----------------------------------
-Description
-----------------------------------
-
-
-Gives players a Graphic User Interface to access the WorldEdit API.
-
-
-
-----------------------------------
-License
-----------------------------------
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,10 +20,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
 ----------------------------------
-Credits
+Description
 ----------------------------------
 
-Thank you to the minetest community who has shared their code and knowledge with me.
+Gives players a Graphic User Interface to access the WorldEdit API.
 
