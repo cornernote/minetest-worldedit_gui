@@ -42,7 +42,8 @@ worldedit_gui.get_formspec = function(player,page)
 
 			.."button[0,3;2,0.5;worldedit_gui_cylinder;Cylinder]"
 			.."button[2,3;2,0.5;worldedit_gui_hollow_cylinder;H-Cylinder]"
-			.."button[4,3;2,0.5;worldedit_gui_spiral;Spiral]"
+			.."button[4,3;2,0.5;worldedit_gui_sphere;Sphere]"
+			.."button[6,3;2,0.5;worldedit_gui_hollow_sphere;H-Sphere]"
 
 			.."button_exit[0,4;2,0.5;worldedit_gui_dig;Dig]"
 			.."button[2,4;2,0.5;worldedit_gui_copy;Copy]"
@@ -52,6 +53,7 @@ worldedit_gui.get_formspec = function(player,page)
 			.."button[0,5;2,0.5;worldedit_gui_flip;Flip]"
 			.."button[2,5;2,0.5;worldedit_gui_rotate;Rotate]"
 			.."button[4,5;2,0.5;worldedit_gui_transpose;Transpose]"
+			.."button[6,5;2,0.5;worldedit_gui_spiral;Spiral]"
 			
 			.."button[0,6;2,0.5;worldedit_gui_save;Save]"
 			.."button[2,6;2,0.5;worldedit_gui_load;Load]"
@@ -110,8 +112,8 @@ worldedit_gui.get_formspec = function(player,page)
 			.."button[2.7,1.4;1,0.5;worldedit_gui_replace_node_1_save;Save]"
 
 			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_replace;4,1;1,1;1]"
-			.."field[5.2,1.7;2,0.5;worldedit_gui_set_node;Replace Node;]"
-			.."button[6.7,1.4;1,0.5;worldedit_gui_set_node_save;Save]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_replace_node_2;Replace Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_replace_node_2_save;Save]"
 			
 		if minetest.registered_nodes[node_1] then
 			formspec = formspec.."label[0,1.8;Selected: "..node_1.."]"
@@ -148,8 +150,8 @@ worldedit_gui.get_formspec = function(player,page)
 			.."field[2.2,1.5;2,0.5;worldedit_gui_cylinder_axis;Axis (x/y/z);]"
 
 			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_cylinder;4,1;1,1;]"
-			.."field[5.2,1.7;2,0.5;worldedit_gui_set_node;Use Node;]"
-			.."button[6.7,1.4;1,0.5;worldedit_gui_set_node_save;Save]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_cylinder_node;Use Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_cylinder_node_save;Save]"
 			
 		if minetest.registered_nodes[node] then
 			formspec = formspec.."label[4,1.8;Selected: "..node.."]"
@@ -179,8 +181,8 @@ worldedit_gui.get_formspec = function(player,page)
 			.."field[2.2,1.5;2,0.5;worldedit_gui_hollow_cylinder_axis;Axis (x/y/z);]"
 
 			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_hollow_cylinder;4,1;1,1;]"
-			.."field[5.2,1.7;2,0.5;worldedit_gui_set_node;Use Node;]"
-			.."button[6.7,1.4;1,0.5;worldedit_gui_set_node_save;Save]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_hollow_cylinder_node;Use Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_hollow_cylinder_node_save;Save]"
 			
 		if minetest.registered_nodes[node] then
 			formspec = formspec.."label[4,1.8;Selected: "..node.."]"
@@ -188,6 +190,64 @@ worldedit_gui.get_formspec = function(player,page)
 		if pos1 then
 			if minetest.registered_nodes[node] then
 				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_hollow_cylinder_go;Create Hollow Cylinder]"
+			else
+				formspec = formspec.."label[2.5,2.5;Missing Node]"
+			end
+		else
+			formspec = formspec.."label[2.5,2.5;No WorldEdit Region Selected]"
+		end
+	end
+	
+	-- worldedit_gui_sphere
+	if page == "worldedit_gui_sphere" then
+		local node = player_inv:get_stack("worldedit_gui_sphere",1):get_name()
+		formspec = formspec
+			.."size[8,7.5]"
+			.."button[0,0;2,0.5;main;Main]"
+			.."button[2,0;2,0.5;worldedit_gui;World Edit]"
+			.."list[current_player;main;0,3.5;8,4;]"
+
+			.."field[0.2,1.5;2,0.5;worldedit_gui_sphere_radius;Radius;]"
+
+			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_sphere;4,1;1,1;]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_sphere_node;Use Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_sphere_node_save;Save]"
+			
+		if minetest.registered_nodes[node] then
+			formspec = formspec.."label[4,1.8;Selected: "..node.."]"
+		end
+		if pos1 then
+			if minetest.registered_nodes[node] then
+				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_sphere_go;Create Sphere]"
+			else
+				formspec = formspec.."label[2.5,2.5;Missing Node]"
+			end
+		else
+			formspec = formspec.."label[2.5,2.5;No WorldEdit Region Selected]"
+		end
+	end
+
+	-- worldedit_gui_hollow_sphere
+	if page == "worldedit_gui_hollow_sphere" then
+		local node = player_inv:get_stack("worldedit_gui_hollow_sphere",1):get_name()
+		formspec = formspec
+			.."size[8,7.5]"
+			.."button[0,0;2,0.5;main;Main]"
+			.."button[2,0;2,0.5;worldedit_gui;World Edit]"
+			.."list[current_player;main;0,3.5;8,4;]"
+
+			.."field[0.2,1.5;2,0.5;worldedit_gui_hollow_sphere_radius;Radius;]"
+
+			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_hollow_sphere;4,1;1,1;]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_hollow_sphere_node;Use Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_hollow_sphere_node_save;Save]"
+			
+		if minetest.registered_nodes[node] then
+			formspec = formspec.."label[4,1.8;Selected: "..node.."]"
+		end
+		if pos1 then
+			if minetest.registered_nodes[node] then
+				formspec = formspec.."button_exit[2.5,2.5;3,0.5;worldedit_gui_hollow_sphere_go;Create Hollow Sphere]"
 			else
 				formspec = formspec.."label[2.5,2.5;Missing Node]"
 			end
@@ -208,8 +268,8 @@ worldedit_gui.get_formspec = function(player,page)
 			.."field[0.2,1.5;2,0.5;worldedit_gui_spiral_size;Size;]"
 
 			.."list[detached:"..name.."_worldedit_gui;worldedit_gui_spiral;4,1;1,1;]"
-			.."field[5.2,1.7;2,0.5;worldedit_gui_set_node;Use Node;]"
-			.."button[6.7,1.4;1,0.5;worldedit_gui_set_node_save;Save]"
+			.."field[5.2,1.7;2,0.5;worldedit_gui_spiral_node;Use Node;]"
+			.."button[6.7,1.4;1,0.5;worldedit_gui_spiral_node_save;Save]"
 			
 		if minetest.registered_nodes[node] then
 			formspec = formspec.."label[4,1.8;Selected: "..node.."]"
@@ -450,9 +510,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.worldedit_gui_set_node and fields.worldedit_gui_set_node_save then
 		local stack = ItemStack(fields.worldedit_gui_set_node)
 		if stack:is_empty() then
-			player:get_inventory():set_stack("worldedit_gui_set", 1, nil)
+			player:get_inventory():set_stack("worldedit_gui_set",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_set",1,nil)
 		else
-			player:get_inventory():set_stack("worldedit_gui_set", 1, stack)
+			player:get_inventory():set_stack("worldedit_gui_set",1,stack)
 			worldedit_gui.inv[name]:set_stack("worldedit_gui_set",1,stack)
 		end
 		page = "worldedit_gui_set"
@@ -477,9 +538,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.worldedit_gui_replace_node_1 and fields.worldedit_gui_replace_node_1_save then
 		local stack = ItemStack(fields.worldedit_gui_replace_node_1)
 		if stack:is_empty() then
-			player:get_inventory():set_stack("worldedit_gui_replace", 1, nil)
+			player:get_inventory():set_stack("worldedit_gui_replace",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",1,nil)
 		else
-			player:get_inventory():set_stack("worldedit_gui_replace", 1, stack)
+			player:get_inventory():set_stack("worldedit_gui_replace",1,stack)
 			worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",1,stack)
 		end
 		page = "worldedit_gui_replace"
@@ -487,9 +549,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.worldedit_gui_replace_node_2 and fields.worldedit_gui_replace_node_2_save then
 		local stack = ItemStack(fields.worldedit_gui_replace_node_2)
 		if stack:is_empty() then
-			player:get_inventory():set_stack("worldedit_gui_replace", 2, nil)
+			player:get_inventory():set_stack("worldedit_gui_replace",2,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",2,nil)
 		else
-			player:get_inventory():set_stack("worldedit_gui_replace", 2, stack)
+			player:get_inventory():set_stack("worldedit_gui_replace",2,stack)
 			worldedit_gui.inv[name]:set_stack("worldedit_gui_replace",2,stack)
 		end
 		page = "worldedit_gui_replace"
@@ -512,13 +575,25 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "worldedit_gui_cylinder"
 	end
 	
+	-- cylinder - save
+	if fields.worldedit_gui_cylinder_node and fields.worldedit_gui_cylinder_node_save then
+		local stack = ItemStack(fields.worldedit_gui_cylinder_node)
+		if stack:is_empty() then
+			player:get_inventory():set_stack("worldedit_gui_cylinder",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_cylinder",1,nil)
+		else
+			player:get_inventory():set_stack("worldedit_gui_cylinder",1,stack)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_cylinder",1,stack)
+		end
+		page = "worldedit_gui_cylinder"
+	end
+
 	-- cylinder - action
 	if fields.worldedit_gui_cylinder_go then
 		local radius = tonumber(fields.worldedit_gui_cylinder_radius)
 		local length = tonumber(fields.worldedit_gui_cylinder_length)
 		local found, _, axis = fields.worldedit_gui_cylinder_axis:find("^([xyz])$")
 		if radius and length and axis then
-		print(dump(axis))
 			local node = player:get_inventory():get_stack("worldedit_gui_cylinder", 1):get_name()
 			local pos = worldedit.pos1[name]
 			local count = worldedit.cylinder(pos, axis, length, radius, node)
@@ -534,6 +609,19 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "worldedit_gui_hollow_cylinder"
 	end
 	
+	-- hollow_cylinder - save
+	if fields.worldedit_gui_hollow_cylinder_node and fields.worldedit_gui_hollow_cylinder_node_save then
+		local stack = ItemStack(fields.worldedit_gui_hollow_cylinder_node)
+		if stack:is_empty() then
+			player:get_inventory():set_stack("worldedit_gui_hollow_cylinder",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_hollow_cylinder",1,nil)
+		else
+			player:get_inventory():set_stack("worldedit_gui_hollow_cylinder",1,stack)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_hollow_cylinder",1,stack)
+		end
+		page = "worldedit_gui_hollow_cylinder"
+	end
+
 	-- hollow_cylinder - action
 	if fields.worldedit_gui_hollow_cylinder_go then
 		local radius = tonumber(fields.worldedit_gui_hollow_cylinder_radius)
@@ -550,11 +638,88 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "worldedit_gui_hollow_cylinder"
 	end
 	
+	-- sphere - page
+	if fields.worldedit_gui_sphere then
+		page = "worldedit_gui_sphere"
+	end
+	
+	-- sphere - save
+	if fields.worldedit_gui_sphere_node and fields.worldedit_gui_sphere_node_save then
+		local stack = ItemStack(fields.worldedit_gui_sphere_node)
+		if stack:is_empty() then
+			player:get_inventory():set_stack("worldedit_gui_sphere",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_sphere",1,nil)
+		else
+			player:get_inventory():set_stack("worldedit_gui_sphere",1,stack)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_sphere",1,stack)
+		end
+		page = "worldedit_gui_sphere"
+	end
+
+	-- sphere - action
+	if fields.worldedit_gui_sphere_go then
+		local radius = tonumber(fields.worldedit_gui_sphere_radius)
+		if radius then
+			local node = player:get_inventory():get_stack("worldedit_gui_sphere", 1):get_name()
+			local pos = worldedit.pos1[name]
+			local count = worldedit.sphere(pos, radius, node)
+			minetest.chat_send_player(name, count .. " nodes added")
+		else
+			minetest.chat_send_player(name, "invalid input")
+		end
+		page = "worldedit_gui_sphere"
+	end
+	
+	-- hollow_sphere - page
+	if fields.worldedit_gui_hollow_sphere then
+		page = "worldedit_gui_hollow_sphere"
+	end
+	
+	-- hollow_sphere - save
+	if fields.worldedit_gui_hollow_sphere_node and fields.worldedit_gui_hollow_sphere_node_save then
+		local stack = ItemStack(fields.worldedit_gui_hollow_sphere_node)
+		if stack:is_empty() then
+			player:get_inventory():set_stack("worldedit_gui_hollow_sphere",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_hollow_sphere",1,nil)
+		else
+			player:get_inventory():set_stack("worldedit_gui_hollow_sphere",1,stack)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_hollow_sphere",1,stack)
+		end
+		page = "worldedit_gui_hollow_sphere"
+	end
+
+	-- hollow_sphere - action
+	if fields.worldedit_gui_hollow_sphere_go then
+		local radius = tonumber(fields.worldedit_gui_hollow_sphere_radius)
+		if radius then
+			local node = player:get_inventory():get_stack("worldedit_gui_hollow_sphere", 1):get_name()
+			local pos = worldedit.pos1[name]
+			local count = worldedit.hollow_sphere(pos, radius, node)
+			minetest.chat_send_player(name, count .. " nodes added")
+		else
+			minetest.chat_send_player(name, "invalid input")
+		end
+		page = "worldedit_gui_hollow_sphere"
+	end
+	
 	-- spiral - page
 	if fields.worldedit_gui_spiral then
 		page = "worldedit_gui_spiral"
 	end
 	
+	-- spiral - save
+	if fields.worldedit_gui_spiral_node and fields.worldedit_gui_spiral_node_save then
+		local stack = ItemStack(fields.worldedit_gui_spiral_node)
+		if stack:is_empty() then
+			player:get_inventory():set_stack("worldedit_gui_spiral",1,nil)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_spiral",1,nil)
+		else
+			player:get_inventory():set_stack("worldedit_gui_spiral",1,stack)
+			worldedit_gui.inv[name]:set_stack("worldedit_gui_spiral",1,stack)
+		end
+		page = "worldedit_gui_spiral"
+	end
+
 	-- spiral - action
 	if fields.worldedit_gui_spiral_go then
 		local size = tonumber(fields.worldedit_gui_spiral_size)
@@ -859,7 +1024,7 @@ minetest.register_on_joinplayer(function(player)
 			return 0
 		end,
 	})
-	for _,v in ipairs({"set","cylinder","hollow_cylinder","spiral"}) do
+	for _,v in ipairs({"set","cylinder","hollow_cylinder","sphere","hollow_sphere","spiral"}) do
 		local page = "worldedit_gui_"..v
 		player_inv:set_size(page, 1)
 		worldedit_gui.inv[name]:set_size(page, 1)
