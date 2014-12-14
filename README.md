@@ -13,7 +13,7 @@ Provides a player interface for worldedit mod.
 
 - **[Documentation](http://cornernote.github.io/minetest-worldedit_gui)**
 - **[GitHub Project](https://github.com/cornernote/minetest-worldedit_gui)**
-- **[Minetest Forum](http://minetest.net/forum/viewtopic.php?id=3112)**
+- **[Minetest Forum](https://forum.minetest.net/viewtopic.php?id=3112)**
 
 
 ## Support
